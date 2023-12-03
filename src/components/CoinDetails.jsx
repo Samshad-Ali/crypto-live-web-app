@@ -1,59 +1,54 @@
 import { Badge, Box, Button, Container, HStack, Image,Heading , Radio, RadioGroup, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, VStack } from '@chakra-ui/react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { server } from '../index';
+import { context, server } from '../index';
 import CustomBar from './CustomBar';
 import Loader from './Loader';
 import Error from './Error';
 import Items from './Items';
 import Chart from './Chart';
 const CoinDetails = () => {
-
+  const {loader,setLoader,error,setError} = useContext(context);
   const [coin, setCoin] = useState({});
-  const [loader, setLoder] = useState(true);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
   const [currency, setCurrency] = useState("inr");
   const [days,setDays] = useState('24h')
   const [chartArray,setChartArray] = useState([])
   const params = useParams();
 
   const btnsArray = ['24H', '7D', '1M', '6M', '1Y', 'MAX']
-  
   const switchChartStats = (i) => {
     switch (i) {
       case '24H':
         setDays('24h');
-        setLoder(true);
+        setLoader(true);
         break;
       case '7D':
         setDays('7d');
-        setLoder(true);
+        setLoader(true);
         break;
       case '1M':
         setDays('30d');
-        setLoder(true);
+        setLoader(true);
         break;
       case '6M':
         setDays('180d');
-        setLoder(true);
+        setLoader(true);
         break;
       case '1Y':
         setDays('365d');
-        setLoder(true);
+        setLoader(true);
         break;
       case 'MAX':
         setDays('max');
-        setLoder(true);
+        setLoader(true);
         break;
      default:
         setDays('24h');
-        setLoder(true);
+        setLoader(true);
       
     }
   }
-
   const fetchingCoinDetail = async () => {
     try {
       const { data } =
@@ -61,10 +56,10 @@ const CoinDetails = () => {
       const {data : ChartData} = await axios.get(`${server}/coins/${params.id}/market_chart?vs_currency=${currency}&days=${days}`);
       setCoin(data);
       setChartArray(ChartData.prices)
-      setLoder(false);
+      setLoader(false);
     } catch (e) {
       setError(true);
-      setLoder(false);
+      setLoader(false);
     }
   };
   useEffect(() => {
@@ -77,7 +72,6 @@ const CoinDetails = () => {
   }
 
 const currencySymbol = currency === "inr" ? "₹" : currency === "eur" ? "€" : "$";
-
 
   return (
     <Container maxW={'container.xl'} >
@@ -127,7 +121,6 @@ const currencySymbol = currency === "inr" ? "₹" : currency === "eur" ? "€" :
                   {currencySymbol}{coin.market_data.current_price[currency]}
                 </StatNumber>
                 <StatHelpText>
-
                 </StatHelpText>
                 <StatArrow  type={coin.market_data.price_change_percentage_24h>0?'increase':'decrease'}/>
                   {coin.market_data.price_change_percentage_24h}%
@@ -150,7 +143,6 @@ const currencySymbol = currency === "inr" ? "₹" : currency === "eur" ? "€" :
                   <Items title='All Time Low' value={`${currencySymbol}${coin.market_data.atl[currency]}`} />
                   <Items title='All Time High' value={`${currencySymbol}${coin.market_data.ath[currency]}`} />
               </Box>
-
             </VStack>
           </>
         )
