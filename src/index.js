@@ -7,8 +7,8 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 export const context = createContext();
 const AppWrapper=()=>{
-  const [exchangeData,setExchangeData]=useState('');
-  const [coinsData,setCoinsData]=useState('');
+  const [exchangeData,setExchangeData]=useState([]);
+  const [coinsData,setCoinsData]=useState([]);
   const [loader,setLoader]=useState(true);
   const [error,setError]=useState(false);
   return(

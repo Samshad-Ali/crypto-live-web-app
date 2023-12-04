@@ -13,7 +13,6 @@ const Coin = () => {
   const [currency, setCurrency] = useState("inr");
 
   const btn = new Array(125).fill(1);
-  console.log(btn)
   const Pagination = (para) => {
     setPage(para);
     setLoader(true);
@@ -24,7 +23,6 @@ const Coin = () => {
       const { data } =
         await axios.get(`${server}/coins/markets?vs_currency=${currency}&page=${page}
       `);
-      console.log(data)
      setCoinsData(data);
       setLoader(false);
     } catch (e) {
@@ -67,9 +65,9 @@ const Coin = () => {
               <Radio value={"eur"}>€ EUR</Radio>
             </HStack>
           </RadioGroup>
-          {loader ? (
+          {/* {loader ? (
             <Loader />
-          ) : (
+          ) : ( */}
             <>
               <HStack wrap={"wrap"} justifyContent={"space-evenly"}>
                 {coinsData.map((item) => (
@@ -81,7 +79,7 @@ const Coin = () => {
                 ))}
               </HStack>
             </>
-          )}
+          {/* )} */}
           <HStack overflowX={"auto"} p={"4"}>
             {btn.map((item, i) => {
               return (

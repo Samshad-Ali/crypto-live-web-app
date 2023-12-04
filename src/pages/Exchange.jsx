@@ -7,7 +7,7 @@ import ExchangeCard from "../components/ExchangeCard";
 import Loader from "../components/Loader";
 
 const Exchange = () => {
-  const { exchangeData, loader, setLoader, setExchangeData,error,setError } =
+  const {exchangeData,loader,setLoader,setExchangeData,error,setError} =
     useContext(context);
   const fetchingData = async () => {
     try {
